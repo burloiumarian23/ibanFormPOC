@@ -8,6 +8,7 @@ app.use( bodyParser.json() )
 
 app.use( '/app'   , express.static('static') )
 app.use( '/app/js', express.static('js'))
+app.use( '/app/libs/', express.static('node_modules'))
 
 app.listen( port , () => {
    console.log(`Server listening on port ${port}`)
