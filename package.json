@@ -9,6 +9,8 @@
     },
     "author": "Marian Burloiu",
     "dependencies": {
+        "@lion/fieldset": "^0.16.4",
+        "@lion/form": "^0.8.4",
         "body-parser": "^1.18.3",
         "express": "^4.16.3"
     },
