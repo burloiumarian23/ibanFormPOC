@@ -40,7 +40,7 @@ export function handleErrors( input, success ) {
 
 export function showErrors( input ) {
 	let findInputs = ``
-	if( input.lastElementChild ) input.remove( input.lastElementChild )
+	if( input.lastChild ) input.removeChild( input.lastChild )
 	for( let inputId of __errors ) {
 		findInputs = `$[inputId} is invalid.\n`
 	}
