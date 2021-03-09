@@ -4,16 +4,32 @@
 	<title>POC</title>
 </head>
 <body>
-	<lion-fieldset name="nameGroup" label="Name">
-		<lion-input label="Greeting" name="greeting" .modelValue=${'Hello world'}></lion-input>
-	</lion-fieldset>
+<body>
+<div class="container-fluid">
+  	<div class="row-fluid mt-5">
+  		<div class="col-12 " >
+  			<h2 >
+  				IBAN POC
+  			</h2>
+  		</div>
+		<div class="col-6">
+			<form>
+			  <div class="form-row">
+			    <div class="col">
+			      	<input type="text" class="form-control" placeholder="IBAN" id="iban">
+			    </div>
+			    <div class="col">
+			        <input type="number" min="1" max="10000" class="form-control" placeholder="Amount" value="1" id="amount">
+			    </div>
+			  </div>
+			</form>
+		</div>  		
+  	</div>
+</div>
+<link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css" >
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="bootstrap/dist/js/bootstrap.min.js" ></script>
 <script type="module">
-
-import '/app/libs/@lion/fieldset/lion-fieldset.js'
-import '/app/libs/@lion/form/lion-form.js'
- 
-
-
 </script>
 </body>
 </html>

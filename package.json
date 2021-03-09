@@ -5,13 +5,14 @@
     "license": "MIT",
     "scripts": {
         "start": "node ./server.js",
-        "start-dev": "nodemon --inspect ./server.js"
+        "start-dev": "nodemon --watch ./server.js"
     },
     "author": "Marian Burloiu",
     "dependencies": {
         "@lion/fieldset": "^0.16.4",
         "@lion/form": "^0.8.4",
         "body-parser": "^1.18.3",
+        "bootstrap": "^4.6.0",
         "express": "^4.16.3"
     },
     "devDependencies": {
