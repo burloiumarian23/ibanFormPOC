@@ -39,22 +39,43 @@ export function handleErrors( input, success ) {
 }
 
 export function showErrors( input ) {
-	let findInputs = ``
+	let inputErrorText = ``
 	if( input.lastChild ) input.removeChild( input.lastChild )
 	for( let inputId of __errors ) {
-		findInputs = `$[inputId} is invalid.\n`
+		inputErrorText += `$[inputId} is invalid.\n`
 	}
-	let alert = `<div class="alert alert-warning alert-dismissible fade show" role="alert">
-		<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-			<span aria-hidden="true">&times;</span>
-		</button>
-		${findInputs}
-	</div>`
-	input.append( alert )
+	let text = document.createTextNode( inputErrorText )
+}
+
+export function isNumber( value ) {
+	if( value.length == 0 ) return false
+	if( value.includes("-") ) return false
+	return !isNaN( value ) 
+}
+
+function __checkForm( formId, validationSchema )
+{
+	let inputs  = document.querySelectorAll( formId + " input" )
+	let invalid = false
+	let isValid = 0
+	for( let input of inputs )
+	{
+		if( validationSchema.hasOwnProperty( input.id ) && validationSchema[ input.id ].required )
+		{
+			if( input.value.length > validationSchema[ input.id ].minLength ) isValid += 1
+		}
+	}
+	return isValid == inputs.length ? true : false
+}
+
+export function isFormValid( formId, validationSchema ) {
+	let boolean = __checkForm( formId, validationSchema )
+	return !__errors.length && boolean
 }
 
 export function isIBAN(iban) {
     //Move front 4 digits to the end
+    if( iban.length == 0 ) return false
     let rearrange = iban.substring( 4, iban.length) + iban.substring(0, 4) 
 
     let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('') 
