@@ -1,6 +1,6 @@
 let __errors = []
 
-export async function request(url = '', method = "GET", data = {}) {
+export async function request( url = '', method = "GET", data = {} ) {
   // Default options are marked with *
   const response = await fetch(url, {
     method, // *GET, POST, PUT, DELETE, etc.
@@ -53,6 +53,12 @@ export function isNumber( value ) {
 	return !isNaN( value ) 
 }
 
+/**
+ * [__checkForm CHECKS IF INPUTS ARE REQUIERED AND LENGTH OF EACH INPUTS CORRESPONDS WITH VALIDATION SCHEMA]
+ * @param  {[ STRING ]} formId           [description]
+ * @param  {[ OBJECT ]} validationSchema [description]
+ * @return {[type]}                      [description]
+ */
 function __checkForm( formId, validationSchema )
 {
 	let inputs  = document.querySelectorAll( formId + " input" )
@@ -67,7 +73,12 @@ function __checkForm( formId, validationSchema )
 	}
 	return isValid == inputs.length ? true : false
 }
-
+/**
+ * [isFormValid IF THERE IS NO ERROR AND SCHEMA VALIDATION IS RESPECTED THAN YOU CAN NOW SUBMIT FORM ]
+ * @param  {[ STRING ]}  formId           [description]
+ * @param  {[ OBJECT ]}  validationSchema [description]
+ * @return {Boolean}                  [description]
+ */
 export function isFormValid( formId, validationSchema ) {
 	let boolean = __checkForm( formId, validationSchema )
 	return !__errors.length && boolean
