@@ -1,5 +1,5 @@
 let __errors = []
-
+// not being used
 export async function request( url = '', method = "GET", data = {} ) {
   // Default options are marked with *
   const response = await fetch(url, {
@@ -9,6 +9,12 @@ export async function request( url = '', method = "GET", data = {} ) {
   return response.json() // parses JSON response into native JavaScript objects
 }
 
+/**
+ * [debouncer this is used on all inputs and it is listening for the user to finish typing and afterwards it ]
+ * @param  {[ function ]} fn             [callback function]
+ * @param  {[ number ]} timer [ timer is set to 1 second ]
+ * @return {[ function ]}     [description]
+ */
 export function debouncer( fn, timer) {
 	let timeId = null
 	return ( ...args ) => {
@@ -38,15 +44,45 @@ export function handleErrors( input, success ) {
 	if( __errors.indexOf( input.id ) != -1 && success )  __errors.splice( __errors.indexOf( input.id ), 1 )
 }
 
-export function showErrors( input ) {
-	let inputErrorText = ``
-	if( input.lastChild ) input.removeChild( input.lastChild )
-	for( let inputId of __errors ) {
-		inputErrorText += `$[inputId} is invalid.\n`
-	}
-	let text = document.createTextNode( inputErrorText )
-}
 
+export function addAlertType( type ) {
+
+	document.querySelector("#alerts").children[ 0 ].classList.remove("alert-success")
+	document.querySelector("#alerts").children[ 0 ].classList.remove("alert-danger")
+	if( type ) document.querySelector("#alerts").children[ 0 ].classList.add(`alert-${type}`)
+
+}
+/**
+ * [displayMessage description]
+ * @param  {[type]} input       [description]
+ * @param  {[type]} type        [description]
+ * @param  {[object]} amountInput [ only being used on the type equal to success ]
+ * @param  {[object]} ibanInput   [ only being used on the type equal to success ]
+ * @return void
+ */
+export function displayMessage( input, type, amountInput = null, ibanInput = null ) {
+	let inputText = ``
+	if( input.children[ 0 ].lastChild ) input.children[ 0 ].removeChild( input.children[ 0 ].lastChild )
+	if( type == 'error' && __errors.length > 0 )
+	{
+		for( let inputId of __errors ) {
+			console.log( inputId )
+			inputText += `${inputId.toUpperCase()} is invalid.\n`
+		}
+		let text = document.createTextNode( inputText )
+		input.children[ 0 ].appendChild( text )				
+	}
+	if( type == 'success' )
+	{
+		let textSuccess = document.createTextNode( `You have successfully transfered the amount of ${amountInput.value} EUR to the ${ibanInput.value}` )
+		input.children[ 0 ].appendChild( textSuccess )
+	}
+}
+/**
+ * [isNumber check if value is a non-negative number or not an empty string ]
+ * @param  {[string]}  value [description]
+ * @return {Boolean} [description]
+ */
 export function isNumber( value ) {
 	if( value.length == 0 ) return false
 	if( value.includes("-") ) return false

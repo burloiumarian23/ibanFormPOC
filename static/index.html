@@ -13,7 +13,7 @@
   			</h2>
   		</div>
   		<div class="col-12" id="alerts">
-			<div class="alert alert-warning alert-dismissible fade show" role="alert" >
+			<div class="alert alert-dismissible fade show" role="alert" >
 	 
 			</div>  			
   		</div>
@@ -24,29 +24,39 @@
 			      	<input type="text" class="form-control" placeholder="IBAN" id="iban">
 			    </div>
 			    <div class="col-3">
-			        <input type="number" min="1" max="10000" class="form-control" placeholder="Amount" value="1" id="amount">
+			        <input type="number" min="1" max="10000" class="form-control" placeholder="Amount" value="0" id="amount">
 			    </div>
 			    <div class="col-3">
 			        <button type="button" class="form-control" disabled="true" id="submitForm">Submit</button>
 			    </div>			    
 			  </div>
 			</form>
-		</div>  		
+		</div>
+		<div class="col-12 mt-5 hide" id="enterToken" class="">
+			<input type="text" class="form-control" placeholder="Please enter a valid Token (8 Alphanumeric Characters)" id="token">
+		</div>		  		
   	</div>
 </div>
 <style type="text/css">
 	.has-danger .form-control {
     	border-color: #d9534f;
 	}
+	.hide{
+		display: none;
+	}
 </style>
 <link rel="stylesheet" href="bootstrap/dist/css/bootstrap.min.css" >
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="bootstrap/dist/js/bootstrap.min.js" ></script>
 <script type="module">
-import { debouncer, isIBAN, isNumber, handleErrors, showErrors, isFormValid } from '/app/js/helper.js'
+import { debouncer, isIBAN, isNumber, handleErrors, displayMessage, isFormValid, addAlertType } from '/app/js/helper.js'
 
 let submitButton = document.querySelector('#submitForm')
 let ibanInput = document.querySelector("#iban")
+let amountInput = document.querySelector("#amount")
+let inputToken = document.querySelector("#token")
+
+// PAGE LOGIC
 
 let validationSchema = {
 	iban: {
@@ -60,22 +70,43 @@ let validationSchema = {
 }
 
 ibanInput.addEventListener( "keyup" , debouncer( ( e ) => { 
+	let type = null
 	handleErrors( ibanInput, isIBAN( ibanInput.value ) )
-	showErrors( document.querySelector("#alerts") )
+	displayMessage( document.querySelector("#alerts"), 'error' )
 	let isValid = isFormValid( "#form", validationSchema )
+	console.log( isValid )
+	if( !isValid ) type = 'danger'
+	addAlertType( type )
 	isValid ? submitButton.removeAttribute('disabled') : submitButton.setAttribute('disabled', true)
+
 } , 1000  ) )
 
-let amountInput = document.querySelector("#amount")
-amountInput.addEventListener( "keyup" , debouncer( ( e ) => { 
+
+amountInput.addEventListener( "change" , debouncer( ( e ) => { 
+	let type = null
 	handleErrors( amountInput, isNumber( amountInput.value ) ) 
-	showErrors( document.querySelector("#alerts") ) 
+	displayMessage( document.querySelector("#alerts"), 'error' ) 
 	let isValid = isFormValid( "#form", validationSchema ) 
+	if( !isValid ) type = 'danger'
+	addAlertType( type )
 	isValid ? submitButton.removeAttribute('disabled') : submitButton.setAttribute('disabled', true)
+
 } , 1000  ) )
+
+inputToken.addEventListener( "keyup" , debouncer( ( e ) => { 
+
+	if ( /^([a-z0-9]{8})$/.test( inputToken.value) ) {
+		addAlertType( 'success' )
+		displayMessage( document.querySelector("#alerts"), 'success', amountInput, ibanInput)
+    	console.log( "cool" )
+	}
+
+} , 1000  ) )
+
 
 submitButton.addEventListener("click", ( e ) => {
 	e.preventDefault()
+	enterToken.classList.toggle( "hide" )
 	console.log( ibanInput.value, " and ", amountInput.value, " submitted")
 })
 
